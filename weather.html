@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Weather App</title>
+    <style>
+      /* CSS styles for the weather app */
+      body {
+        background-image: url('file:///Users/aryojavanmard/Downloads/9weatherwater.png');
+        background-size: cover;
+
+        font-family: sans-serif;
+        }
+      .weather-card {
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        max-width: 500px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      #temperature {
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      #description {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      #weather-icon {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 20px;
+      }
+      #city-input {
+        padding: 5px;
+        margin-bottom: 10px;
+        font-size: 18px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="weather-card">
+      <h1>Weather in <span id="city-name">London</span></h1>
+      <img id="weather-icon" src="" alt="">
+      <div id="temperature"></div>
+      <div id="description"></div>
+      <input id="city-input" type="text" placeholder="Enter a city name">
+      <button id="submit-button">Get Weather</button>
+    </div>
+    <script>
+      const apiKey = '13a931f88723dd281467e8de96c017a5'; // Replace with your OpenWeatherMap API key
+      
+      function getWeather(city) {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+          .then(response => response.json())
+          .then(data => {
+            // Use the data to display the weather on your website
+            const temperature = data.main.temp;
+            const description = data.weather[0].description;
+            const iconUrl = `https://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+            // Display the temperature, description, and weather icon on your website
+            document.getElementById('temperature').textContent = `${temperature}°C`;
+            document.getElementById('description').textContent = description;
+            document.getElementById('weather-icon').src = iconUrl;
+            document.getElementById('city-name').textContent = city;
+          })
+          .catch(error => console.error(error));
+      }
+      
+      document.getElementById('submit-button').addEventListener('click', () => {
+        const city = document.getElementById('city-input').value;
+        getWeather(city);
+      });
+    </script>
+  </body>
+</html>
